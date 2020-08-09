@@ -38,7 +38,7 @@ def msg():
     #screen_array2D[5, 5] = 1
     #screen_array2D[4, 6] = 1
     #screen_array2D[4, 4] = 1
-
+ 
     return convert_screen_array2D_to_string(screen_array2D)
 
 mark_pos((4, 5), screen_array2D)
