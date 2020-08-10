@@ -1,7 +1,7 @@
 import commands
 
 # ENTER YOUR TOKEN HERE
-TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA._SI7kj-Tne5j9F0vYKdMfWAKagI"
+TOKEN = "NTI4OTY4MDM4NzcxNDU4MDcz.XCjt4A.3tmFi1kF-Qotn5GAh5DKMKm5Qmo"
 
 import discord
 import simple_game as sg
@@ -38,8 +38,10 @@ async def on_message(message):
         elif message.content == "!pic":
             # print("!pic")
             pass
-        elif message.content == "!helps":
-            await message.channel.send(f'{message.author.mention} zahteva: ```css\nLista komandi:\n [1] !snake_game (ne funkcioniše)\n [2] !roll_dice (Generise nasumican broj od 1 do 6)\n [3] !stupid (ne funkcioniše)\n [4] !speed_typing (ne funkcioniše)\n [5] !play (ne funkcioniše)\n```')    
+        elif message.content == "!help":
+            await commands.print_help_message(message)    
+        elif message.content == "!pomoc":
+            await message.channel.send(f'```css\nLista komandi:\n [1] !snake_game (ne funkcioniše)\n [2] !roll_dice (Generise nasumican broj od 1 do 6)\n [3] !stupid (ne funkcioniše)\n [4] !speed_typing (ne funkcioniše)\n [5] !play (ne funkcioniše)\n [6] !help (Lista komandi na engleskom)\n ```')    
         else:
             command_words = message_content.split()
             if len(command_words) != 2:
