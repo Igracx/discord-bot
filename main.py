@@ -38,6 +38,8 @@ async def on_message(message):
         elif message.content == "!pic":
             # print("!pic")
             pass
+        elif message.content == "!helps":
+            await message.channel.send(f'{message.author.mention} zahteva: ```css\nLista komandi:\n [1] !snake_game (ne funkcioniše)\n [2] !roll_dice (Generise nasumican broj od 1 do 6)\n [3] !stupid (ne funkcioniše)\n [4] !speed_typing (ne funkcioniše)\n [5] !play (ne funkcioniše)\n```')    
         else:
             command_words = message_content.split()
             if len(command_words) != 2:
