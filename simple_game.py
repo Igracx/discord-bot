@@ -41,7 +41,13 @@ def msg():
  
     return convert_screen_array2D_to_string(screen_array2D)
 
+
+def build_screen(O_POS):
+    line = 'X'*SCREEN_WIDTH
+    msg = (line + '\n') * SCREEN_HEIGHT
+    return msg
+
 mark_pos((4, 5), screen_array2D)
 mark_pos((8, 8), screen_array2D)
 mark_pos((2, 2), screen_array2D)
-print(msg())
+#print(msg())
