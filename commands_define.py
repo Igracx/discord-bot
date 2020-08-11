@@ -3,7 +3,7 @@ import discord
 
 # !roll_dice command implementation
 async def roll_dice(ctx):
-    dice_roll_result = random.randrange(1, 6) # get a random integer between 1 and 6
+    dice_roll_result = random.randint(1, 6) # get a random integer between 1 and 6
     embed=discord.Embed(title="Roll_dice Minigame", description=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! Nice roll!", color=0xfcfcfc)
     embed.set_thumbnail(url="https://kcdd78689wordpress.files.wordpress.com/2019/02/dice-animation.gif")
     embed.set_footer(text="For more commands, type !help or !pomoc.")

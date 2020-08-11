@@ -5,7 +5,7 @@ from discord.ext import commands
 import commands_define as cdef
 
 # ENTER YOUR TOKEN HERE
-TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA.JpUkBZveU4P2cjl36LE7k8vaus8"
+TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA.u4J-VuCjjsUd6Rh-dpTONVeBas0"
 
 client = commands.Bot(command_prefix="!")
 client.remove_command('help')
@@ -80,6 +80,16 @@ class Music(commands.Cog):
 
         await ctx.message.delete()
         source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(query))
+        ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
+
+    @commands.command()
+    async def stupid(self, ctx, at=None):
+
+        filename = "stupid_audio.m4a"
+        if at is not None:
+            await ctx.send(f"{at} is stupid!")
+        await ctx.message.delete()
+        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(filename))
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
 
     @commands.command()
