@@ -4,6 +4,7 @@ import commands_define as cdef
 
 # ENTER YOUR TOKEN HERE
 TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA.pnLaLK34PXyfaGo9kBCbHgbO26I"
+#TOKEN = "NTI4OTY4MDM4NzcxNDU4MDcz.XCjt4A.r-4_MurOpZcIDfxCLhrsXPv5CuY"
 
 client = commands.Bot(command_prefix='!')
 client.remove_command('help')
