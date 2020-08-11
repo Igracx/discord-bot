@@ -9,6 +9,11 @@ async def roll_dice(ctx):
     embed.set_footer(text="For more commands, type !help or !pomoc.")
     await ctx.send(embed=embed)
 
+# deprecated implementation of dice_roll command
+async def roll_dice_deprecated(ctx):
+    dice_roll_result = random.randrange(1, 6) # get a random integer between 1 and 6
+    await ctx.send(f"Dice roll for {ctx.author.name}: {dice_roll_result}")
+
 async def print_help_message(ctx):
     msg="""```css
 Commands:
@@ -18,7 +23,7 @@ Commands:
     [4] !stupid (not functioning)
     [5] !play (not functioning)
     [6] !help (List of commands in English)
-    [6] !pomoc (List of commands in Serbian)```"""
+    [7] !pomoc (List of commands in Serbian)```"""
     await ctx.send(msg)
 
 async def print_pomoc_message(ctx):
