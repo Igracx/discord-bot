@@ -7,7 +7,7 @@ import shutil
 import os
 
 # ENTER YOUR TOKEN HERE
-TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA.z0OhvdoL0kn0h9dXMXux5_nVzIs"
+TOKEN = ""
 
 client = commands.Bot(command_prefix="!")
 client.remove_command('help')
