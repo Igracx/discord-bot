@@ -1,13 +1,35 @@
 import random
+import os
+import praw
 import discord
 
 # !roll_dice command implementation
 async def roll_dice(ctx):
     dice_roll_result = random.randint(1, 6) # get a random integer between 1 and 6
-    embed=discord.Embed(title="Roll_dice Minigame", description=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! Nice roll!", color=0xfcfcfc)
-    embed.set_thumbnail(url="https://kcdd78689wordpress.files.wordpress.com/2019/02/dice-animation.gif")
+    if dice_roll_result == 1:
+        path = os.path.join('gifs', 'Broj1.gif')
+        desc=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! Shitty roll, kill yourself!"
+    elif dice_roll_result == 2:
+        path = os.path.join('gifs', 'Broj2.gif')
+        desc=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! Not as shitty, but still die."
+    elif dice_roll_result == 3:
+        path = os.path.join('gifs', 'Broj3.gif')
+        desc=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! Decent."
+    elif dice_roll_result == 4:
+        path = os.path.join('gifs', 'Broj4.gif')
+        desc=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! Good one!"
+    elif dice_roll_result == 5:
+        path = os.path.join('gifs', 'Broj5.gif')           
+        desc=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! Very nice!"
+    else:
+        path = os.path.join('gifs', 'Broj6.gif')
+        desc=f"\nDice roll for *{ctx.author.name}:*\n **You got {dice_roll_result}** ! **Bravo!**" 
+    file=discord.File(path, filename='image.gif')          
+    embed=discord.Embed(title="Roll_dice Minigame", description=desc, color=0xfcfcfc)
+    embed.set_thumbnail(url="attachment://image.gif")
     embed.set_footer(text="For more commands, type !help or !pomoc.")
-    await ctx.send(embed=embed)
+    await ctx.send(file=file, embed=embed)
+
 
 # deprecated implementation of dice_roll command
 async def roll_dice_deprecated(ctx):

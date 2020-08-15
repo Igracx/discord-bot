@@ -1,11 +1,13 @@
-import asyncio
-import discord
-import youtube_dl
 from discord.ext import commands
 import commands_define as cdef
+import youtube_dl
+import asyncio
+import discord
+import shutil
+import os
 
 # ENTER YOUR TOKEN HERE
-TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA.u4J-VuCjjsUd6Rh-dpTONVeBas0"
+TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA.z0OhvdoL0kn0h9dXMXux5_nVzIs"
 
 client = commands.Bot(command_prefix="!")
 client.remove_command('help')
@@ -15,9 +17,16 @@ client.remove_command('help')
 # Suppress noise about console usage from errors
 youtube_dl.utils.bug_reports_message = lambda: ''
 
+# '%(extractor)s-%(id)s-%(title)s.%(ext)s'
+
+download_dir = "music_tmp"
+if "music_tmp" in os.listdir():
+    shutil.rmtree(download_dir)
+os.mkdir(download_dir)
+
 ytdl_format_options = {
     'format': 'bestaudio/best',
-    'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+    'outtmpl': os.path.join(download_dir, "%(title)s.%(ext)s"),
     'restrictfilenames': True,
     'noplaylist': True,
     'nocheckcertificate': True,
@@ -42,7 +51,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.data = data
 
         self.title = data.get('title')
-        self.url = data.get('url')
 
     @classmethod
     async def from_url(cls, url, *, loop=None, stream=False):
@@ -52,12 +60,14 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if 'entries' in data:
             # take first item from a playlist
             data = data['entries'][0]
-
+        print(f"Downloading video: \"{data['title']}\"\turl={data['webpage_url']}")
         filename = data['url'] if stream else ytdl.prepare_filename(data)
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
 
 # music commands
+
+music_queue = []
 
 class Music(commands.Cog):
     def __init__(self, client):
@@ -67,6 +77,7 @@ class Music(commands.Cog):
     async def join(self, ctx, *, channel: discord.VoiceChannel):
         """Joins a voice channel"""
 
+        await ctx.message.delete()
         if ctx.voice_client is not None:
             return await ctx.voice_client.move_to(channel)
 
@@ -75,12 +86,39 @@ class Music(commands.Cog):
 
 
     @commands.command()
-    async def play(self, ctx, *, query):
-        """Plays a file from the local filesystem"""
+    async def addq(self, ctx, *args):
+        """Downloads audio file from the url, and adds it to the que, anythin youtube-dl supports"""
 
         await ctx.message.delete()
-        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(query))
-        ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
+        for url in args:
+            source = await YTDLSource.from_url(url, loop=self.client.loop)
+            music_queue.append(source)
+
+
+    @commands.command()
+    async def pque(self, ctx):
+        """Start playing songs in queue, starting from the first added song"""
+
+        await ctx.message.delete()
+        channel = ctx.channel
+        voice = ctx.voice_client
+
+        if len(music_queue) == 0:
+            return
+
+        def play_next(ctx):
+            if len(music_queue) == 0:
+                return
+
+            source = music_queue.pop(0)
+            voice.play(source, after=lambda e: play_next(ctx))
+            voice.is_playing() 
+
+        if channel and not voice.is_playing():
+            source = music_queue.pop(0)
+            voice.play(source, after=lambda e: play_next(ctx))
+            voice.is_playing()
+
 
     @commands.command()
     async def stupid(self, ctx, at=None):
@@ -92,23 +130,6 @@ class Music(commands.Cog):
         source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(filename))
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
 
-    @commands.command()
-    async def yt(self, ctx, *, url):
-        """Plays from a url (almost anything youtube_dl supports)"""
-
-        await ctx.message.delete()
-        player = await YTDLSource.from_url(url, loop=self.client.loop)
-        ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-
-
-    @commands.command()
-    async def stream(self, ctx, *, url):
-        """Streams from a url (same as yt, but doesn't predownload)"""
-
-        await ctx.message.delete() 
-        player = await YTDLSource.from_url(url, loop=self.client.loop, stream=True)
-        ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-
 
     @commands.command()
     async def stop(self, ctx):
@@ -117,9 +138,8 @@ class Music(commands.Cog):
         await ctx.message.delete()
         await ctx.voice_client.disconnect()
 
-    @play.before_invoke
-    @yt.before_invoke
-    @stream.before_invoke
+    @pque.before_invoke
+    @stupid.before_invoke
     async def ensure_voice(self, ctx):
         if ctx.voice_client is None:
             if ctx.author.voice:
