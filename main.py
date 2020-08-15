@@ -7,7 +7,7 @@ import shutil
 import os
 
 # ENTER YOUR TOKEN HERE
-TOKEN = ""
+TOKEN = "NzQxOTg2NzkyNTUwNjk0OTI0.Xy_jDA.8bzKPdEhnEmxw9XRHN0vReSyjUU"
 
 client = commands.Bot(command_prefix="!")
 client.remove_command('help')
@@ -89,6 +89,7 @@ class Music(commands.Cog):
     async def addq(self, ctx, *args):
         """Downloads audio file from the url, and adds it to the que, anythin youtube-dl supports"""
 
+        print(f"{ctx.message.author}: {ctx.message.content}")
         await ctx.message.delete()
         for url in args:
             source = await YTDLSource.from_url(url, loop=self.client.loop)
@@ -99,6 +100,7 @@ class Music(commands.Cog):
     async def pque(self, ctx):
         """Start playing songs in queue, starting from the first added song"""
 
+        print(f"{ctx.message.author}: {ctx.message.content}")
         await ctx.message.delete()
         channel = ctx.channel
         voice = ctx.voice_client
@@ -126,6 +128,8 @@ class Music(commands.Cog):
         filename = "stupid_audio.m4a"
         if at is not None:
             await ctx.send(f"{at} is stupid!")
+
+        print(f"{ctx.message.author}: {ctx.message.content}")
         await ctx.message.delete()
         source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(filename))
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
@@ -135,6 +139,7 @@ class Music(commands.Cog):
     async def stop(self, ctx):
         """Stops and disconnects the bot from voice"""
 
+        print(f"{ctx.message.author}: {ctx.message.content}")
         await ctx.message.delete()
         await ctx.voice_client.disconnect()
 
@@ -157,6 +162,7 @@ class Music(commands.Cog):
 async def roll_dice(ctx):
     """Rolls dice, returns random number between 1 and 6"""
 
+    print(f"{ctx.message.author}: {ctx.message.content}")
     await ctx.message.delete()
     await cdef.roll_dice(ctx)
 
@@ -165,6 +171,7 @@ async def roll_dice_deprecated(ctx):
     """Same as roll_dice, just basic text, no formating
         deprecated version """
 
+    print(f"{ctx.message.author}: {ctx.message.content}")
     await ctx.message.delete()
     await cdef.roll_dice_deprecated(ctx)
 
@@ -172,6 +179,7 @@ async def roll_dice_deprecated(ctx):
 async def help(ctx):
     """prints command and what they do"""
 
+    print(f"{ctx.message.author}: {ctx.message.content}")
     await ctx.message.delete()
     await cdef.print_help_message(ctx)
 
@@ -179,6 +187,7 @@ async def help(ctx):
 async def pomoc(ctx):
     """prints help in Serbian language"""
 
+    print(f"{ctx.message.author}: {ctx.message.content}")
     await ctx.message.delete()
     await cdef.print_pomoc_message(ctx)
 

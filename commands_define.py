@@ -39,23 +39,33 @@ async def roll_dice_deprecated(ctx):
 async def print_help_message(ctx):
     msg="""```css
 Commands:
-    [1] !snake_game (not functioning)
-    [2] !speed_typing (not functioning)
-    [3] !roll_dice (Generates a random integer between 1 and 6)
-    [4] !stupid (not functioning)
-    [5] !play (not functioning)
-    [6] !help (List of commands in English)
-    [7] !pomoc (List of commands in Serbian)```"""
+    [1]  !join <server> | tell bot to join voice server <voice_server>
+    [2]  !addq <url>    | add song from url to music queue
+    [3]  !pque          | start playing queue, if song is already playing skip it 
+                        | (adds the bot to callers voice server if not already in voice server)
+    [4]  !stop          | stop playing music and leave voice channel
+    [5]  !roll_dice     | prints a random integer between 1 and 6
+    [6]  !stupid (name) | starts a rant about how stupid last said thing is, 
+                        | if name is given also tells given user that he is stupid
+    [7]  !hot_meme      | prints the hottest meme from r/memes
+    [8]  !rand_meme     | prints a random meme from r/memes
+    [9]  !help          | list of commands in English
+    [10] !pomoc         | list of commands in Serbian```"""
     await ctx.send(msg)
 
 async def print_pomoc_message(ctx):
     msg = """```css
 Komande:
-    [1] !snake_game (ne funkcioniše)
-    [2] !speed_typing (ne funkcioniše)
-    [3] !roll_dice (Generise nasumican broj od 1 do 6)
-    [4] !stupid (ne funkcioniše)
-    [5] !play (ne funkcioniše)
-    [6] !help (Lista komandi na engleskom)
-    [7] !pomoc (Lista komandi na srpskom)```"""
+    [1]  !join <kanal>  | naredi botu da se pridruzi glasovnom kanalu <kanal>
+    [2]  !addq <link>   | dodaj pesmu sa linka u listu cekanja muzike
+    [3]  !pque          | pocni da pustas listu pesama, preskoci pesmu ako je pustena 
+                        | (dodaje bota u glasovni kanal onog koji je izdao komandu ako bot vec nije u glasovnom kanalu)
+    [4]  !stop          | iskljuci muziku i napusti glasovni kanal
+    [5]  !roll_dice     | ispisuje nasumican broj od 1 do 6
+    [6]  !stupid (name) | pocinje da gundja o tome koliko je zadnja izgovorena stvar glupa, 
+                        | ako je dato ime kao argument reci datom korisniku da je glup
+    [7]  !hot_meme      | ispisuje trenutno najpopularniji mim iz r/memes
+    [8]  !rand_meme     | daje nasumican mim iz r/memes
+    [9]  !help          | lista komanda na engleskom
+    [10] !pomoc         | lista komanda na srpskom```"""
     await ctx.send(msg)
